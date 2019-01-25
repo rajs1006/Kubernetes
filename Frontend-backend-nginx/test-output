@@ -1,0 +1,44 @@
+./test-deployment.py 10.142.0.3:31671 10.142.0.3:31671 10.142.0.5:31671
+Sending 100 requests to 10.142.0.3:31671...
+Sending 100 requests to 10.142.0.3:31671...
+Sending 100 requests to 10.142.0.5:31671...
+
+Encountered 4 frontends:
+frontend-65874db8cc-qzflf
+frontend-65874db8cc-9dg28
+frontend-65874db8cc-88ww7
+frontend-65874db8cc-mhnxs
+
+Encountered 6 backends:
+backend-64b9b8c966-zwwvw
+backend-64b9b8c966-vj98r
+backend-64b9b8c966-rnnpw
+backend-64b9b8c966-5nx4g
+backend-64b9b8c966-sscbz
+backend-64b9b8c966-lplwq
+
+Encountered 24 reply texts:
+Hello! You are 10.233.71.44 and requested /etc/nginx/html/ from 10.233.102.155 (backend-64b9b8c966-vj98r)
+Hello! You are 10.233.75.37 and requested /etc/nginx/html/ from 10.233.75.36 (backend-64b9b8c966-5nx4g)
+Hello! You are 10.233.75.37 and requested /etc/nginx/html/ from 10.233.102.152 (backend-64b9b8c966-rnnpw)
+Hello! You are 10.233.102.154 and requested /etc/nginx/html/ from 10.233.75.36 (backend-64b9b8c966-5nx4g)
+Hello! You are 10.233.75.37 and requested /etc/nginx/html/ from 10.233.71.45 (backend-64b9b8c966-zwwvw)
+Hello! You are 10.233.75.31 and requested /etc/nginx/html/ from 10.233.75.36 (backend-64b9b8c966-5nx4g)
+Hello! You are 10.233.102.154 and requested /etc/nginx/html/ from 10.233.71.45 (backend-64b9b8c966-zwwvw)
+Hello! You are 10.233.75.31 and requested /etc/nginx/html/ from 10.233.71.45 (backend-64b9b8c966-zwwvw)
+Hello! You are 10.233.75.37 and requested /etc/nginx/html/ from 10.233.75.35 (backend-64b9b8c966-sscbz)
+Hello! You are 10.233.75.31 and requested /etc/nginx/html/ from 10.233.102.152 (backend-64b9b8c966-rnnpw)
+Hello! You are 10.233.71.44 and requested /etc/nginx/html/ from 10.233.75.35 (backend-64b9b8c966-sscbz)
+Hello! You are 10.233.102.154 and requested /etc/nginx/html/ from 10.233.102.155 (backend-64b9b8c966-vj98r)
+Hello! You are 10.233.75.37 and requested /etc/nginx/html/ from 10.233.71.46 (backend-64b9b8c966-lplwq)
+Hello! You are 10.233.102.154 and requested /etc/nginx/html/ from 10.233.71.46 (backend-64b9b8c966-lplwq)
+Hello! You are 10.233.75.31 and requested /etc/nginx/html/ from 10.233.71.46 (backend-64b9b8c966-lplwq)
+Hello! You are 10.233.102.154 and requested /etc/nginx/html/ from 10.233.75.35 (backend-64b9b8c966-sscbz)
+Hello! You are 10.233.75.37 and requested /etc/nginx/html/ from 10.233.102.155 (backend-64b9b8c966-vj98r)
+Hello! You are 10.233.102.154 and requested /etc/nginx/html/ from 10.233.102.152 (backend-64b9b8c966-rnnpw)
+Hello! You are 10.233.71.44 and requested /etc/nginx/html/ from 10.233.102.152 (backend-64b9b8c966-rnnpw)
+Hello! You are 10.233.75.31 and requested /etc/nginx/html/ from 10.233.102.155 (backend-64b9b8c966-vj98r)
+Hello! You are 10.233.71.44 and requested /etc/nginx/html/ from 10.233.75.36 (backend-64b9b8c966-5nx4g)
+Hello! You are 10.233.71.44 and requested /etc/nginx/html/ from 10.233.71.46 (backend-64b9b8c966-lplwq)
+Hello! You are 10.233.71.44 and requested /etc/nginx/html/ from 10.233.71.45 (backend-64b9b8c966-zwwvw)
+Hello! You are 10.233.75.31 and requested /etc/nginx/html/ from 10.233.75.35 (backend-64b9b8c966-sscbz)

@@ -1,0 +1,101 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cc-webapp
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  namespace: cc-webapp
+spec:
+  selector:
+    app: backend
+    tier: backend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: http
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: cc-webapp
+spec:
+  selector:
+    matchLabels:
+      app: backend
+      tier: backend
+      track: stable
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: backend
+        tier: backend
+        track: stable
+    spec:
+      containers:
+        - name: backend
+          image: "sourabhraj/study:backend1.0"
+          ports:
+            - name: http
+              containerPort: 80
+          livenessProbe:
+            httpGet:
+              path: /ready
+              port: 80
+              httpHeaders:
+              - name: CC-Ready
+                value: This backend server is ready
+            initialDelaySeconds: 5
+            timeoutSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  namespace: cc-webapp
+spec:
+  selector:
+    app: frontend
+    tier: frontend
+  ports:
+  - protocol: "TCP"
+    port: 80
+    targetPort: 80
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: cc-webapp
+spec:
+  selector:
+    matchLabels:
+      app: frontend
+      tier: frontend
+      track: stable
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: frontend
+        tier: frontend
+        track: stable
+    spec:
+      containers:
+      - name: frontend
+        image: "sourabhraj/study:frontend1.0"
+        livenessProbe:
+          httpGet:
+            path: /ready
+            port: 80
+            httpHeaders:
+            - name: CC-Ready
+              value: This frontend server is ready
+          initialDelaySeconds: 5
+          timeoutSeconds: 10

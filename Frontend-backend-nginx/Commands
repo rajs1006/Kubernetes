@@ -1,0 +1,96 @@
+VMs:
+
+
+KUBE 1
+
+gcloud compute --project=project-on-linux instances create kube1 --zone=us-east1-b --machine-type=n1-standard-1 --subnet=default --network-tier=PREMIUM --maintenance-policy=MIGRATE --service-account=994088987338-compute@developer.gserviceaccount.com --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append --tags=http-server,https-server --image=ubuntu-minimal-1804-bionic-v20190108 --image-project=ubuntu-os-cloud --boot-disk-size=10GB --boot-disk-type=pd-standard --boot-disk-device-name=kube1
+
+gcloud compute --project=project-on-linux firewall-rules create default-allow-http --direction=INGRESS --priority=1000 --network=default --action=ALLOW --rules=tcp:80 --source-ranges=0.0.0.0/0 --target-tags=http-server
+
+gcloud compute --project=project-on-linux firewall-rules create default-allow-https --direction=INGRESS --priority=1000 --network=default --action=ALLOW --rules=tcp:443 --source-ranges=0.0.0.0/0 --target-tags=https-server
+
+
+
+Kube 2
+
+gcloud compute --project=project-on-linux instances create kube2 --zone=us-east1-b --machine-type=n1-standard-1 --subnet=default --network-tier=PREMIUM --maintenance-policy=MIGRATE --service-account=994088987338-compute@developer.gserviceaccount.com --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append --tags=http-server,https-server --image=ubuntu-minimal-1804-bionic-v20190108 --image-project=ubuntu-os-cloud --boot-disk-size=10GB --boot-disk-type=pd-standard --boot-disk-device-name=kube2
+
+gcloud compute --project=project-on-linux firewall-rules create default-allow-http --direction=INGRESS --priority=1000 --network=default --action=ALLOW --rules=tcp:80 --source-ranges=0.0.0.0/0 --target-tags=http-server
+
+gcloud compute --project=project-on-linux firewall-rules create default-allow-https --direction=INGRESS --priority=1000 --network=default --action=ALLOW --rules=tcp:443 --source-ranges=0.0.0.0/0 --target-tags=https-server
+
+Kube 3
+
+gcloud compute --project=project-on-linux instances create kube3 --zone=us-east1-b --machine-type=n1-standard-1 --subnet=default --network-tier=PREMIUM --maintenance-policy=MIGRATE --service-account=994088987338-compute@developer.gserviceaccount.com --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append --tags=http-server,https-server --image=ubuntu-minimal-1804-bionic-v20190108 --image-project=ubuntu-os-cloud --boot-disk-size=10GB --boot-disk-type=pd-standard --boot-disk-device-name=kube3
+
+
+
+sudo apt update
+sudo apt install python3-pip
+pip3 install ansible==2.6
+sudo apt install git
+git clone https://github.com/kubernetes-sigs/kubespray --branch=v2.8.1
+
+
+
+mount -o remount,rw /
+chmod 640 /etc/shadow
+sudo passwd sovit_agar
+1111
+
+
+sudo apt-get update && sudo apt-get install -y apt-transport-https
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
+sudo apt-get update
+
+
+
+---------------------------------------------------
+
+docker-compose -f docker-compose.yml up -d --build
+
+docker logs cc-backend-service
+docker exec -it service /bin/bash
+
+docker stop cc-frontend-service cc-backend-service
+docker rm $(docker ps -aq)
+
+curl locahost
+
+
+-----------------------------------------------------
+
+kubectl cluster-info
+
+kubectl create -f cc-webapp.yml
+kubectl delete -f cc-webapp.yml
+
+kubectl patch pod backend-64b9b8c966-5nx4g -p '{"spec":{"containers":[{"name":"backend","image":"sourabhraj/study:backend1.0"}]}}'
+
+kubectl get deployments --namespace=cc-webapp
+kubectl get pods --namespace=cc-webapp
+kubectl get services --namespace=cc-webapp
+
+kubectl get rs --namespace=cc-webapp
+
+NAME                  DESIRED   CURRENT   READY   AGE
+backend-64b9b8c966    6         6         6       18h
+frontend-65874db8cc   4         4         4       18h
+
+kubectl describe deploy --namespace=cc-webapp
+kubectl describe deploy frontend --namespace=cc-webapp
+kubectl describe pod backedn --namespace=cc-webapp
+kubectl describe service backedn --namespace=cc-webapp
+
+kubectl logs --since=0s frontend-65874db8cc-9dg28 --namespace=cc-webapp
+kubectl logs --since=0s backend-64b9b8c966-5nx4g --namespace=cc-webapp
+kubectl logs -f frontend-65874db8cc-9dg28 --namespace=cc-webapp
+kubectl logs -f backend-64b9b8c966-5nx4g --namespace=cc-webapp
+
+
+kubectl exec -it backend-64b9b8c966-5nx4g /bin/bash --namespace=cc-webapp
+
+
+kubectl scale --replicas=6 deployment/frontend --namespace=cc-webapp
+kubectl scale --replicas=4 deployment/backend --namespace=cc-webapp
